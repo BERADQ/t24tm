@@ -11,9 +11,7 @@ import java.util.Objects;
 
 public class T24tm
 {
-	
-	public static long times = 0;
-	
+	public static long times = 0;//遍历错误计数
 	static Operator f1 = new Operator(">>", 2, true, Operator.PRECEDENCE_ADDITION - 3)
 	{
 		@Override
@@ -21,7 +19,7 @@ public class T24tm
 		{
 			return (int) doubles[0] >> (int) doubles[1];
 		}
-	};
+	};//运算符定义
 	static Operator f2 = new Operator("<<", 2, true, Operator.PRECEDENCE_ADDITION - 3)
 	{
 		@Override
@@ -29,7 +27,7 @@ public class T24tm
 		{
 			return (int) doubles[0] << (int) doubles[1];
 		}
-	};
+	};//运算符定义
 	static Operator f3 = new Operator("^", 2, true, Operator.PRECEDENCE_ADDITION - 5)
 	{
 		@Override
@@ -37,7 +35,7 @@ public class T24tm
 		{
 			return (int) doubles[0] ^ (int) doubles[1];
 		}
-	};
+	};//运算符定义
 	static Operator f4 = new Operator("&", 2, true, Operator.PRECEDENCE_ADDITION - 4)
 	{
 		@Override
@@ -45,7 +43,7 @@ public class T24tm
 		{
 			return (int) doubles[0] & (int) doubles[1];
 		}
-	};
+	};//运算符定义
 	static Operator f5 = new Operator("|", 2, true, Operator.PRECEDENCE_ADDITION - 6)
 	{
 		@Override
@@ -53,42 +51,25 @@ public class T24tm
 		{
 			return (int) doubles[0] | (int) doubles[1];
 		}
-	};
-
-	static List<List<Integer>> listList;
-	static String[] bracket;
-	static String[] operator;
-	static String[] minus;
-	static String result;
-/*
-	static List<Integer> integers;
-
+	};//运算符定义
+	static List<List<Integer>> listList;//数组全排列后
+	static String[] bracket;//括号
+	static String[] operator;//运算符
+	static String[] minus;//数字的正负
+	static String result;//独立结果
+	static List<String> resultList = new ArrayList<>();//结果List
 	
-	static int i;
-	static int j;
-	static int k;
-*/
-
-
-	
-	public static String getExper(int[] numbers)
+	public static List<String> getExper(int[] numbers)
 	{
-		
-		//T24tm.listList = permuteUnique(numbers);
-		listList = permuteUnique(numbers);
-		//T1 te = new T1();
-		for (int i = 0; i <= 0b111111; i++)
+		listList = permuteUnique(numbers);//数组全排列
+		for (int i = 0; i <= 0b111111; i++)//遍历括号map
 		{
-			//T24tm.i = i;
-			for (int j = 0; j <= 819; j++)
+			for (int j = 0; j <= 728; j++)//遍历运算符map 实际是9进制888
 			{
-				//T24tm.j = j;
 				for (List<Integer> integers : listList)
 				{
-					//T24tm.integers = integers;
-					for (int k = 0; k < 0b1111; k++)
+					for (int k = 0; k < 0b1111; k++)//遍历数字的正负map
 					{
-						//T24tm.k = k;
 						bracket = getBracket(i);
 						operator = getOperator(j);
 						minus = getMinusSign(k);
@@ -120,21 +101,19 @@ public class T24tm
 															.operator(f5).build();
 											if (expr.validate().isValid())
 												if (expr.evaluate() == 24)
-													System.out.println(result);
+													resultList.add(result);
 											times++;
 										} catch (Exception ignored)
 										{
 										}
 									}
-						//Thread thread = new Thread(te);
-						//thread.start();
 					}
 					
 				}
 			}
 			
 		}
-		return null;
+		return resultList.size() > 0 ? resultList : null;
 	}
 	
 	public static String[] getBracket(int map)
@@ -161,7 +140,6 @@ public class T24tm
 				result[i] = "";
 			}
 		}
-		
 		return result;
 	}
 	
@@ -185,7 +163,6 @@ public class T24tm
 		}
 		return result;
 	}
-	
 	
 	static boolean[] vis;
 	
@@ -220,7 +197,6 @@ public class T24tm
 		}
 	}
 	
-	
 	public static String[] getMinusSign(int map)
 	{
 		String[] s = {"", "", "", ""};
@@ -240,9 +216,6 @@ public class T24tm
 			if (stringmap.charAt(i) == '1') s[i] = "-";
 			else s[i] = "";
 		}
-		
 		return s;
 	}
-	
-	
 }
