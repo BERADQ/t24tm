@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="exp4j-0.4.8" level="application" />
     <orderEntry type="library" name="exp4j-0.4.8-javadoc" level="application" />
+    <orderEntry type="library" name="jep-java-4" level="application" />
   </component>
 </module>

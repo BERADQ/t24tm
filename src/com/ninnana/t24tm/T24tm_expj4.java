@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class T24tm
+public class T24tm_expj4
 {
 	public static long times = 0;//遍历错误计数
 	static Operator f1 = new Operator(">>", 2, true, Operator.PRECEDENCE_ADDITION - 3)
