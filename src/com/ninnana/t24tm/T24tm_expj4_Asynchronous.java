@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class T24tm_expj4_Asynchronous
 {
@@ -57,13 +58,12 @@ public class T24tm_expj4_Asynchronous
 	static String[] minus;//数字的正负
 	static List<String> resultList = new ArrayList<>();//结果List
 	
-	
+	@Deprecated
 	public static List<String> getExper(int[] numbers)
 	{
 		
 		ExecutorService exec = Executors.newFixedThreadPool(12);
 		Queue<Future<ResultObject>> futures = new LinkedList<>();//算数结果队列
-		Expression expr;
 		listList = permuteUnique(numbers);//数组全排列
 		for (int i = 0; i <= 0b111111; i++)//遍历括号map
 		{
@@ -90,6 +90,14 @@ public class T24tm_expj4_Asynchronous
 			
 		}
 		exec.shutdown();//停止增加任务但已有任务继续处理
+		try
+		{
+			System.out.println(exec.awaitTermination(100, TimeUnit.SECONDS));
+		} catch (InterruptedException e)
+		{
+			throw new RuntimeException(e);
+		}
+		System.out.println(futures.size());
 		while (!futures.isEmpty())//当任意为空时停止，一般来说两者的Size是相同的
 		{
 			try
@@ -112,14 +120,14 @@ public class T24tm_expj4_Asynchronous
 	{
 		String[] result = {"", "", "", "", "", ""};
 		String[] resultmap = {"(", "(", ")", "(", ")", ")"};
-		String stringmap = Integer.toBinaryString(map);
+		StringBuilder stringmap = new StringBuilder(Integer.toBinaryString(map));
 		int c;
 		if (stringmap.length() < 6)
 		{
 			c = 6 - stringmap.length();
 			for (int i = 0; i < c; i++)
 			{
-				stringmap = '0' + stringmap;
+				stringmap.insert(0, '0');
 			}
 		}
 		for (int i = 0; i < result.length; i++)
@@ -139,14 +147,14 @@ public class T24tm_expj4_Asynchronous
 	{
 		final String[] OPERATOR_MAP = {"+", "-", "*", "/", ">>", "<<", "&", "|", "^"};
 		String[] result = {"", "", ""};
-		String stringmap = Integer.toString(map, 9);
+		StringBuilder stringmap = new StringBuilder(Integer.toString(map, 9));
 		int c;
 		if (stringmap.length() < 3)
 		{
 			c = 3 - stringmap.length();
 			for (int i = 0; i < c; i++)
 			{
-				stringmap = '0' + stringmap;
+				stringmap.insert(0, '0');
 			}
 		}
 		for (int i = 0; i < result.length; i++)
@@ -192,14 +200,14 @@ public class T24tm_expj4_Asynchronous
 	public static String[] getMinusSign(int map)
 	{
 		String[] s = {"", "", "", ""};
-		String stringmap = Integer.toBinaryString(map);
+		StringBuilder stringmap = new StringBuilder(Integer.toBinaryString(map));
 		int c;
 		if (stringmap.length() < 4)
 		{
 			c = 4 - stringmap.length();
 			for (int i = 0; i < c; i++)
 			{
-				stringmap = '0' + stringmap;
+				stringmap.insert(0, '0');
 			}
 		}
 		

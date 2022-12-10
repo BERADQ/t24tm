@@ -119,19 +119,18 @@ public class T24tm_expj4
 		}
 		return resultList.size() > 0 ? resultList : null;
 	}
-	
 	public static String[] getBracket(int map)
 	{
 		String[] result = {"", "", "", "", "", ""};
 		String[] resultmap = {"(", "(", ")", "(", ")", ")"};
-		String stringmap = Integer.toBinaryString(map);
+		StringBuilder stringmap = new StringBuilder(Integer.toBinaryString(map));
 		int c;
 		if (stringmap.length() < 6)
 		{
 			c = 6 - stringmap.length();
 			for (int i = 0; i < c; i++)
 			{
-				stringmap = '0' + stringmap;
+				stringmap.insert(0, '0');
 			}
 		}
 		for (int i = 0; i < result.length; i++)
@@ -151,14 +150,14 @@ public class T24tm_expj4
 	{
 		final String[] OPERATOR_MAP = {"+", "-", "*", "/", ">>", "<<", "&", "|", "^"};
 		String[] result = {"", "", ""};
-		String stringmap = Integer.toString(map, 9);
+		StringBuilder stringmap = new StringBuilder(Integer.toString(map, 9));
 		int c;
 		if (stringmap.length() < 3)
 		{
 			c = 3 - stringmap.length();
 			for (int i = 0; i < c; i++)
 			{
-				stringmap = '0' + stringmap;
+				stringmap.insert(0, '0');
 			}
 		}
 		for (int i = 0; i < result.length; i++)
@@ -204,14 +203,14 @@ public class T24tm_expj4
 	public static String[] getMinusSign(int map)
 	{
 		String[] s = {"", "", "", ""};
-		String stringmap = Integer.toBinaryString(map);
+		StringBuilder stringmap = new StringBuilder(Integer.toBinaryString(map));
 		int c;
 		if (stringmap.length() < 4)
 		{
 			c = 4 - stringmap.length();
 			for (int i = 0; i < c; i++)
 			{
-				stringmap = '0' + stringmap;
+				stringmap.insert(0, '0');
 			}
 		}
 		

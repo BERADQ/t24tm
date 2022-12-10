@@ -2,6 +2,7 @@ package com.ninnana.t24tm;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import static com.ninnana.t24tm.T24tm_expj4_Asynchronous.getExper;
 import static com.ninnana.t24tm.T24tm_expj4_Asynchronous.times;
@@ -10,6 +11,9 @@ public class Test
 {
 	public static void main(String[] args)
 	{
+		
+
+		
 		long startTime = System.currentTimeMillis();
 		int[] a = {13, 13, 13, 1};
 		System.out.println("计算: " + Arrays.toString(a));
@@ -19,7 +23,7 @@ public class Test
 		System.out.println("试错: " + times + "times");
 		times = 0;
 		long endTime = System.currentTimeMillis();
-		System.out.println("时长: " + (endTime - startTime) + "ms");//时长: 3437ms 总数: 426
+		System.out.println("时长: " + (endTime - startTime) + "ms");//时长: 4987ms 总数: 257
 	}
 	
 	
