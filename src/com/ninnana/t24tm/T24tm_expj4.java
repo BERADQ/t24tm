@@ -119,23 +119,27 @@ public class T24tm_expj4
 		}
 		return resultList.size() > 0 ? resultList : null;
 	}
+	static StringBuilder bracket_map= new StringBuilder();
 	public static String[] getBracket(int map)
 	{
 		String[] result = {"", "", "", "", "", ""};
 		String[] resultmap = {"(", "(", ")", "(", ")", ")"};
-		StringBuilder stringmap = new StringBuilder(Integer.toBinaryString(map));
+		
+		
+		bracket_map.append(Integer.toBinaryString(map));
+		
 		int c;
-		if (stringmap.length() < 6)
+		if (bracket_map.length() < 6)
 		{
-			c = 6 - stringmap.length();
+			c = 6 - bracket_map.length();
 			for (int i = 0; i < c; i++)
 			{
-				stringmap.insert(0, '0');
+				bracket_map.insert(0, '0');
 			}
 		}
 		for (int i = 0; i < result.length; i++)
 		{
-			if (stringmap.charAt(i) == '1')
+			if (bracket_map.charAt(i) == '1')
 			{
 				result[i] = resultmap[i];
 			} else
@@ -143,27 +147,32 @@ public class T24tm_expj4
 				result[i] = "";
 			}
 		}
+		bracket_map.setLength(0);
 		return result;
 	}
-	
+	static StringBuilder operator_map = new StringBuilder();
 	public static String[] getOperator(int map)
 	{
 		final String[] OPERATOR_MAP = {"+", "-", "*", "/", ">>", "<<", "&", "|", "^"};
 		String[] result = {"", "", ""};
-		StringBuilder stringmap = new StringBuilder(Integer.toString(map, 9));
+		
+		
+		operator_map.append(Integer.toString(map, 9));
+		
 		int c;
-		if (stringmap.length() < 3)
+		if (operator_map.length() < 3)
 		{
-			c = 3 - stringmap.length();
+			c = 3 - operator_map.length();
 			for (int i = 0; i < c; i++)
 			{
-				stringmap.insert(0, '0');
+				operator_map.insert(0, '0');
 			}
 		}
 		for (int i = 0; i < result.length; i++)
 		{
-			result[i] = OPERATOR_MAP[Integer.parseInt(String.valueOf(stringmap.charAt(i)))];
+			result[i] = OPERATOR_MAP[Integer.parseInt(String.valueOf(operator_map.charAt(i)))];
 		}
+		operator_map.setLength(0);
 		return result;
 	}
 	
@@ -199,26 +208,32 @@ public class T24tm_expj4
 			perm.remove(idx);
 		}
 	}
-	
+	static StringBuilder minus_map= new StringBuilder();
 	public static String[] getMinusSign(int map)
 	{
 		String[] s = {"", "", "", ""};
-		StringBuilder stringmap = new StringBuilder(Integer.toBinaryString(map));
+		
+		
+		minus_map.append(Integer.toBinaryString(map));
+		
 		int c;
-		if (stringmap.length() < 4)
+		if (minus_map.length() < 4)
 		{
-			c = 4 - stringmap.length();
+			c = 4 - minus_map.length();
 			for (int i = 0; i < c; i++)
 			{
-				stringmap.insert(0, '0');
+				minus_map.insert(0, '0');
 			}
 		}
 		
 		for (int i = 0; i < s.length; i++)
 		{
-			if (stringmap.charAt(i) == '1') s[i] = "-";
+			if (minus_map.charAt(i) == '1') s[i] = "-";
 			else s[i] = "";
 		}
+		minus_map.setLength(0);
 		return s;
+		
+		
 	}
 }
