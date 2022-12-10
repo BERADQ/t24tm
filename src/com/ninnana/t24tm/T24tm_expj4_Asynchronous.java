@@ -1,11 +1,12 @@
 package com.ninnana.t24tm;
 
 import net.objecthunter.exp4j.Expression;
-import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.operator.Operator;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class T24tm_expj4_Asynchronous
 {
@@ -54,16 +55,14 @@ public class T24tm_expj4_Asynchronous
 	static String[] bracket;//括号
 	static String[] operator;//运算符
 	static String[] minus;//数字的正负
-	static String result;//独立结果
 	static List<String> resultList = new ArrayList<>();//结果List
 	
 	
 	public static List<String> getExper(int[] numbers)
 	{
 		
-		ExecutorService exec = Executors.newFixedThreadPool(10);
-		Stack<String> transitionList = new Stack<>();//中间栈
-		Stack<Future<Double>> futures = new Stack<>();
+		ExecutorService exec = Executors.newFixedThreadPool(12);
+		Queue<Future<ResultObject>> futures = new LinkedList<>();//算数结果队列
 		Expression expr;
 		listList = permuteUnique(numbers);//数组全排列
 		for (int i = 0; i <= 0b111111; i++)//遍历括号map
@@ -77,71 +76,35 @@ public class T24tm_expj4_Asynchronous
 						bracket = getBracket(i);
 						operator = getOperator(j);
 						minus = getMinusSign(k);
-						int i1 =
-								(Objects.equals(bracket[0], "") ? 1 : 0) + (Objects.equals(bracket[1], "") ? 1 : 0) +
-										(Objects.equals(bracket[3], "") ? 1 : 0);
-						int i2 =
-								(Objects.equals(bracket[2], "") ? 1 : 0) + (Objects.equals(bracket[4], "") ? 1 : 0) +
-										(Objects.equals(bracket[5], "") ? 1 : 0);
+						Expr expre = new Expr();
+						expre.setIntegers(integers);
+						expre.setBracket(bracket);
+						expre.setMinus(minus);
+						expre.setOperator(operator);
+						futures.offer(expre.setAsync(exec));
 						
-						if (i1 == i2)
-							if (!(Objects.equals(operator[0], minus[1]) & Objects.equals(bracket[1], "")))
-								if (!(Objects.equals(operator[1], minus[2]) & Objects.equals(bracket[3], "")))
-									if (!Objects.equals(operator[2], minus[3]))
-									{
-										result =
-												bracket[0] + minus[0] + integers.get(0) + operator[0] +
-														bracket[1] + minus[1] + integers.get(1) + bracket[2] +
-														operator[1] +
-														bracket[3] + minus[2] + integers.get(2) + bracket[4] +
-														operator[2] +
-														minus[3] + integers.get(3) + bracket[5];
-										
-										try
-										{
-											expr = new ExpressionBuilder(result).operator(f1).operator(f2).operator(f3)
-													.operator(f4)
-													.operator(f5).build();
-											if (expr != null)
-											{
-												transitionList.push(result);
-												futures.push(expr.evaluateAsync(exec));
-												//System.out.println(result);
-												
-											}
-										} catch (Exception ignored)
-										{
-										}
-										
-										
-									}
 					}
 					
 				}
 			}
 			
 		}
-		exec.shutdown();
-		System.out.println(transitionList.size());
-		System.out.println(futures.size());
-		if (transitionList.size() == futures.size())
+		exec.shutdown();//停止增加任务但已有任务继续处理
+		while (!futures.isEmpty())//当任意为空时停止，一般来说两者的Size是相同的
+		{
 			try
 			{
-				while (!(futures.isEmpty() && transitionList.isEmpty())){
-					Future<Double> doubleFuture = futures.pop();
-					String popS = transitionList.pop();
-					if (doubleFuture.get()==24.0)
-					{
-						System.out.println(popS);
-						resultList.add(popS);
-						continue;
-					}
-					times++;
+				ResultObject OBJ = futures.poll().get();//弹出一个结果以供判断
+				if (OBJ.getValue().get() == 24)//等待结果返回判断是否为24
+				{
+					resultList.add(OBJ.getFormula());//符合条件的加入到结果list中
+					continue;
 				}
-				
-			} catch (Exception ignored)
+				times++;//错误计数
+			} catch (Exception ignored)//无视无效结果抛出的异常
 			{
 			}
+		}
 		return resultList.size() > 0 ? resultList : null;
 	}
 	

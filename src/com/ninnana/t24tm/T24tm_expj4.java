@@ -61,6 +61,7 @@ public class T24tm_expj4
 	
 	public static List<String> getExper(int[] numbers)
 	{
+		Expression expr;
 		listList = permuteUnique(numbers);//数组全排列
 		for (int i = 0; i <= 0b111111; i++)//遍历括号map
 		{
@@ -95,15 +96,18 @@ public class T24tm_expj4
 										
 										try
 										{
-											Expression expr =
-													new ExpressionBuilder(result).operator(f1).operator(f2).operator(f3)
-															.operator(f4)
-															.operator(f5).build();
-											if (expr.validate().isValid())
-												if (expr.evaluate() == 24)
-													resultList.add(result);
-											times++;
-										} catch (Exception ignored)
+											expr = new ExpressionBuilder(result).operator(f1).operator(f2).operator(f3)
+													.operator(f4)
+													.operator(f5).build();
+											if (expr != null)
+												if (expr.validate().isValid())
+													if (expr.evaluate() == 24)//直接计算并判断返回值是否为24
+													{
+														resultList.add(result);//符合的表达式
+														continue;
+													}
+											times++;//错误计次
+										} catch (Exception ignored)//无视无效表达式与无效答案
 										{
 										}
 									}
